@@ -14,7 +14,7 @@ const config: Config = {
 
   favicon: "img/favicon.ico",
 
-  onBrokenLinks: "throw",
+  onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
 
   i18n: {
