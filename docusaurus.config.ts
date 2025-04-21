@@ -99,6 +99,10 @@ const config: Config = {
       additionalLanguages: ["java", "elixir"],
     },
   } satisfies Preset.ThemeConfig,
+
+  customFields: {
+    docsPagination: false,
+  },
 };
 
 export default config;
