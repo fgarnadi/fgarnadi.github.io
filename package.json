@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.7.0",
+    "@docusaurus/plugin-content-blog": "^3.7.0",
     "@docusaurus/plugin-content-docs": "3.7.0",
     "@docusaurus/theme-common": "3.7.0",
     "@docusaurus/tsconfig": "3.7.0",

@@ -103,6 +103,7 @@ const config: Config = {
   } satisfies Preset.ThemeConfig,
 
   customFields: {
+    blogPagination: false,
     docsPagination: false,
   },
 };
