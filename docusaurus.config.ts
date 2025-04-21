@@ -38,6 +38,8 @@ const config: Config = {
         docs: {
           sidebarPath: "./sidebars.ts",
           routeBasePath: "perpus",
+
+          showLastUpdateTime: true,
         },
         blog: {
           showReadingTime: true,
