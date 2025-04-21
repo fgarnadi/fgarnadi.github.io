@@ -18,9 +18,9 @@ First, install and configure the SSH Server:
 sudo apt update && sudo apt install openssh-server -y
 ```
 
-Edit the ssh server config in `/etc/ssh/sshd_config.d/wsl.conf`:
+Edit the ssh server config:
 
-```bash
+```bash title="/etc/ssh/sshd_config.d/wsl.conf"
 Port 2222
 PasswordAuthentication yes
 PubkeyAuthentication yes
@@ -62,9 +62,9 @@ ssh -p 2222 <wslusername>@<windowsip>
 
 ### Optional: Create Startup Script
 
-To make WSL and port fowarding persist across reboots, create a simple script, for example in `C:\scripts\wsl-portproxy.ps1`:
+To make WSL and port fowarding persist across reboots, create a simple script:
 
-```powershell
+```powershell title="C:\scripts\wsl-portproxy.ps1"
 # clean up existing rule
 netsh interface portproxy delete v4tov4 listenport=2222 listenaddress=0.0.0.0
 
