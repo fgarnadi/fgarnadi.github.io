@@ -1,5 +1,6 @@
 ---
 sidebar_position: 1
+hide_last_update: true
 ---
 
 # perpus
