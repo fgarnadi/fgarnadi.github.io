@@ -40,7 +40,7 @@ sudo systemctl enable ssh
 In PowerShell terminal as Administrator, run:
 
 ```powershell
-netsh interface portproxy add v4tov4 listenport=2222 listenaddress=0.0.0.0 connectport=2222 connectaddress=$(wsl hostname -I).trim()
+netsh interface portproxy add v4tov4 listenport=2222 listenaddress=0.0.0.0 connectport=2222 connectaddress=$(wsl hostname -I).split()[0].trim()
 ```
 
 With `wsl hostname -I` it possible to make the ip discovery dynamic.
@@ -70,7 +70,7 @@ To make WSL and port fowarding persist across reboots, create a simple script:
 netsh interface portproxy delete v4tov4 listenport=2222 listenaddress=0.0.0.0
 
 # get WSL IP + boot WSL at the same time
-$wslIp = (wsl hostname -I).trim()
+$wslIp = (wsl hostname -I).split()[0].trim()
 
 # port forward from Windows:2222 -> WSL:2222
 netsh interface portproxy add v4tov4 listenport=2222 listenaddress=0.0.0.0 connectport=2222 connectaddress=$wslIp
@@ -93,3 +93,15 @@ To enable key-based login, copy your SSH public key into the WSL instance:
 ```bash
 ssh-copy-id -i /path/to/privatekey -p 2222 <wslusername>@<windowsip>
 ```
+
+### Important : Disable WSL Auto-Shutdown
+
+By default, WSL is configured to automatically shut down after a period of inactivity, which is controlled by the [`vmIdleTimeout`][wsl-config] setting. This can cause issues for continuous access to the WSL instance or to enable setup to persist across reboots.
+
+> Setting `vmIdleTimeout` to `-1` doesn't helps.
+
+A simple workaround for this is to install **Docker Desktop**. When you set up Docker Desktop with WSL2 as the backend, it ensures that WSL runs in the background even after you close the terminal.
+
+After that, enable Docker Desktop to run on startup, and the setup should be good to go.
+
+[wsl-config]: https://learn.microsoft.com/en-us/windows/wsl/wsl-config
