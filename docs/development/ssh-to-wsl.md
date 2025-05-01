@@ -2,7 +2,7 @@
 sidebar_label: SSH to WSL
 tags: [How-to Guide, WSL, Windows]
 last_update:
-  date: 2025-04-22
+  date: 2025-05-1
 ---
 
 # Enabling SSH Access to Windows Subsytem for Linux (WSL)
@@ -35,9 +35,21 @@ Then start the ssh service and enable it on startup:
 sudo systemctl enable ssh
 ```
 
-### Forward Windows Port to WSL
+### Allow port in the Windows Firewall Host
 
-In PowerShell terminal as Administrator, run:
+In PowerShell terminal as Administrator, add a firewall rule:
+
+```powershell
+New-NetFirewallRule -DisplayName "WSL SSH Proxy" -Direction Inbound -LocalPort 2222 -Protocol TCP -Action Allow
+```
+
+### Option 1: WSL NAT Mode (Default)
+
+This option involves forwarding a port on the Windows host to the SSH server running within the WSL virtual network.
+
+#### Forward Windows Port to WSL
+
+Still in PowerShell terminal, run:
 
 ```powershell
 netsh interface portproxy add v4tov4 listenport=2222 listenaddress=0.0.0.0 connectport=2222 connectaddress=$(wsl hostname -I).split()[0].trim()
@@ -45,23 +57,7 @@ netsh interface portproxy add v4tov4 listenport=2222 listenaddress=0.0.0.0 conne
 
 With `wsl hostname -I` it possible to make the ip discovery dynamic.
 
-### Allow port in the Windows Firewall Host
-
-Still in PowerShell, add a firewall rule:
-
-```powershell
-New-NetFirewallRule -DisplayName "WSL SSH Proxy" -Direction Inbound -LocalPort 2222 -Protocol TCP -Action Allow
-```
-
-### Connect Remotely via SSH
-
-After setup, the WSL instance should be accessible via SSH from another machine:
-
-```bash
-ssh -p 2222 <wslusername>@<windowsip>
-```
-
-### Optional: Create Startup Script
+#### Optional: Create Startup Script
 
 To make WSL and port fowarding persist across reboots, create a simple script:
 
@@ -85,6 +81,29 @@ Then set it to run at startup in the task scheduler:
 - Action Tab: New -> Start a program
   - Program/script: `powershell`
   - Add arguments: `-ExecutionPolicy Bypass -File "C:\scripts\wsl-portproxy.ps1"`
+
+
+### Option 2: WSL Mirrored Mode
+
+When WSL is configured in mirrored mode, it shares the network namespace with the Windows host, simplifying network access.
+
+To enable the mirrored mode, edit the config within the WSL distribution:
+
+```bash title="/etc/wsl.conf"
+[wsl2]
+networkingMode=mirrored
+```
+
+After restarting, the SSH server running on port `2222` within WSL should be directly accessible on Windows IP address.
+No additional port forwarding is required in this mode.
+
+### Connect Remotely via SSH
+
+After setup, the WSL instance should be accessible via SSH from another machine:
+
+```bash
+ssh -p 2222 <wslusername>@<windowsip>
+```
 
 ### Optional: Login with SSH Key
 
