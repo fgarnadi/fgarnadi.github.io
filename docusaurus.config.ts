@@ -98,7 +98,7 @@ const config: Config = {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
       defaultLanguage: "python",
-      additionalLanguages: ["java", "elixir", "bash", "powershell"],
+      additionalLanguages: ["java", "elixir", "bash", "powershell", "rust"],
     },
   } satisfies Preset.ThemeConfig,
 
