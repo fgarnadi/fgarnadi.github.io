@@ -2,7 +2,7 @@
 sidebar_label: SSH to WSL
 tags: [How-to Guide, WSL, Windows]
 last_update:
-  date: 2025-05-1
+  date: 2025-05-01
 ---
 
 # Enabling SSH Access to Windows Subsytem for Linux (WSL)
